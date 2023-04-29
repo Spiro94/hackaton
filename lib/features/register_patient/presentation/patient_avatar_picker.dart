@@ -7,7 +7,7 @@ class PatientAvatarPicker extends StatefulWidget {
   const PatientAvatarPicker({Key? key}) : super(key: key);
 
   @override
-  _PatientAvatarPickerState createState() => _PatientAvatarPickerState();
+  State<PatientAvatarPicker> createState() => _PatientAvatarPickerState();
 }
 
 class _PatientAvatarPickerState extends State<PatientAvatarPicker> {
@@ -32,7 +32,7 @@ class _PatientAvatarPickerState extends State<PatientAvatarPicker> {
         radius: 60,
         backgroundImage: _image != null ? FileImage(_image!) : null,
         child: _image == null
-            ? Icon(
+            ? const Icon(
                 Icons.person,
                 size: 60,
                 color: Colors.white,

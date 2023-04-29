@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hackaton/features/create_treatment/presentation/create_treatment_view.dart';
+import 'package:hackaton/features/register_patient/controller/register_patient_controller.dart';
+import 'package:hackaton/features/register_patient/presentation/birthday_picker.dart';
 import 'package:hackaton/features/register_patient/presentation/patient_avatar_picker.dart';
+import 'package:hackaton/models/patient.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:uuid/uuid.dart';
 
-class RegisterPatientView extends StatefulWidget {
+class RegisterPatientView extends ConsumerStatefulWidget {
   const RegisterPatientView({Key? key}) : super(key: key);
 
   static String get routeName => 'register_patient';
-  static String get routeLocation => '$routeName';
+  static String get routeLocation => routeName;
 
   @override
   _RegisterPatientViewState createState() => _RegisterPatientViewState();
 }
 
-class _RegisterPatientViewState extends State<RegisterPatientView> {
+class _RegisterPatientViewState extends ConsumerState<RegisterPatientView> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nameController = TextEditingController();
@@ -34,24 +40,48 @@ class _RegisterPatientViewState extends State<RegisterPatientView> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(patientsProvider, (previous, next) {
+      next.when(
+        loading: () {
+          context.loaderOverlay.show();
+        },
+        error: (error, stackTrace) {
+          context.loaderOverlay.hide();
+          return;
+        },
+        data: (completed) {
+          context.loaderOverlay.hide();
+          ScaffoldMessenger.of(context)
+            ..clearSnackBars()
+            ..showSnackBar(const SnackBar(
+              content: Text('Paciente registrado correctamente'),
+              duration: Duration(seconds: 2),
+            ));
+
+          context.goNamed(CreateTreatmentView.routeName);
+        },
+      );
+    });
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registrar paciente'),
+        title: const Text('Registrar paciente'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              PatientAvatarPicker(),
-              SizedBox(height: 16),
+              const PatientAvatarPicker(),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Nombres',
                 ),
+                textCapitalization: TextCapitalization.words,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese los nombres';
@@ -59,12 +89,13 @@ class _RegisterPatientViewState extends State<RegisterPatientView> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _lastNameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Apellidos',
                 ),
+                textCapitalization: TextCapitalization.words,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese los apellidos';
@@ -72,24 +103,15 @@ class _RegisterPatientViewState extends State<RegisterPatientView> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
-              TextFormField(
-                controller: _birthdayController,
-                decoration: InputDecoration(
-                  labelText: 'Fecha de nacimiento',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese la fecha de nacimiento';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
+              BirthdayPicker(onDateSelected: (date) {
+                _birthdayController.text = date.toString();
+              }),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Correo electrónico',
                 ),
                 validator: (value) {
@@ -102,12 +124,13 @@ class _RegisterPatientViewState extends State<RegisterPatientView> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _documentController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Documento de identidad',
                 ),
+                keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese un documento de identidad';
@@ -115,15 +138,23 @@ class _RegisterPatientViewState extends State<RegisterPatientView> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    // save patient data and navigate back to home screen
+                    ref.read(patientsProvider.notifier).add(
+                          Patient(
+                            id: const Uuid().v4(),
+                            name: _nameController.text,
+                            lastName: _lastNameController.text,
+                            birthday: _birthdayController.text,
+                            email: _emailController.text,
+                            document: _documentController.text,
+                          ),
+                        );
                   }
-                  context.pushNamed(CreateTreatmentView.routeName);
                 },
-                child: Text('Guardar'),
+                child: const Text('Guardar'),
               ),
             ],
           ),

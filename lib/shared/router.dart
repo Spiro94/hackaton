@@ -6,7 +6,9 @@ import 'package:hackaton/features/home/presentation/home_view.dart';
 import 'package:hackaton/features/login/presentation/decision_view.dart';
 import 'package:hackaton/features/login/presentation/doctor_form.dart';
 import 'package:hackaton/features/login/presentation/patient_form.dart';
+import 'package:hackaton/features/patient_detail/presentation/patient_detail_view.dart';
 import 'package:hackaton/features/register_patient/presentation/register_patient_view.dart';
+import 'package:hackaton/models/patient.dart';
 
 // import 'auth.dart';
 // import 'main.dart';
@@ -40,6 +42,15 @@ final routerProvider = Provider<GoRouter>((ref) {
             name: RegisterPatientView.routeName,
             builder: (context, state) {
               return const RegisterPatientView();
+            },
+          ),
+          GoRoute(
+            path: PatientDetailsView.routeLocation,
+            name: PatientDetailsView.routeName,
+            builder: (context, state) {
+              return PatientDetailsView(
+                patient: state.extra as Patient,
+              );
             },
           ),
           GoRoute(
@@ -83,6 +94,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       // ),
     ],
     redirect: (context, state) {
+      return null;
+    
       // // If our async state is loading, don't perform redirects, yet
       // if (authState.isLoading || authState.hasError) return null;
 

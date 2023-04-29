@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum formType { doctor, patient }
+enum FormType { doctor, patient }
 
-final formTypeProvider = StateProvider<formType>((ref) {
-  return formType.doctor;
+final formTypeProvider = StateProvider<FormType>((ref) {
+  return FormType.doctor;
 });

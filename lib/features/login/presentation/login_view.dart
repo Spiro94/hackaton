@@ -17,7 +17,7 @@ class LoginPage extends ConsumerWidget {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: ref.watch(formTypeProvider) == formType.doctor
+            child: ref.watch(formTypeProvider) == FormType.doctor
                 ? const DoctorForm()
                 : const PatientForm(),
           ),

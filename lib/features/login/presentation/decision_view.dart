@@ -17,20 +17,20 @@ class LoginDecisionView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('¿Qué tipo de usuario eres?'),
-              SizedBox(height: 16),
+              const Text('¿Qué tipo de usuario eres?'),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   context.pushNamed(DoctorForm.routeName);
                 },
-                child: Text('Doctor'),
+                child: const Text('Doctor'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   context.pushNamed(PatientForm.routeName);
                 },
-                child: Text('Paciente'),
+                child: const Text('Paciente'),
               ),
             ],
           ),

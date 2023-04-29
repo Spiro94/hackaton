@@ -5,7 +5,7 @@ class PatientForm extends ConsumerStatefulWidget {
   const PatientForm({super.key});
 
   static String get routeName => 'patient';
-  static String get routeLocation => '$routeName';
+  static String get routeLocation => routeName;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _DoctorFormState();
@@ -20,7 +20,7 @@ class _DoctorFormState extends ConsumerState<PatientForm> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Paciente'),
+          title: const Text('Paciente'),
         ),
         body: Center(
           child: SingleChildScrollView(
@@ -43,7 +43,7 @@ class _DoctorFormState extends ConsumerState<PatientForm> {
                         _email = value!.trim();
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     TextFormField(
