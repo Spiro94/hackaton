@@ -1,0 +1,33 @@
+name: hackaton
+description: A new Flutter project.
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=2.19.6 <3.0.0'
+
+dependencies:
+  flex_color_scheme: ^7.0.5
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.3.6
+  go_router: ^6.5.9
+  google_fonts: ^4.0.4
+  image_picker: ^0.8.7+4
+  responsive_framework: ^1.0.0
+  riverpod_annotation: ^2.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  # flutter_lints: ^2.0.0
+  build_runner:
+  custom_lint:
+  riverpod_generator: ^2.1.3
+  riverpod_lint: ^1.1.5
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
