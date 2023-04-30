@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hackaton/features/login/presentation/decision_view.dart';
 import 'package:hackaton/features/patient_detail/presentation/patient_detail_view.dart';
 import 'package:hackaton/features/register_patient/controller/register_patient_controller.dart';
 import 'package:hackaton/features/register_patient/presentation/register_patient_view.dart';
@@ -28,6 +29,12 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.notifications),
+          ),
+          IconButton(
+            onPressed: () {
+              context.goNamed(LoginDecisionView.routeName);
+            },
+            icon: const Icon(Icons.logout),
           ),
         ],
       ),

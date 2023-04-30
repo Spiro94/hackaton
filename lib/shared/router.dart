@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hackaton/features/create_treatment/presentation/create_treatment_view.dart';
 import 'package:hackaton/features/home/presentation/home_view.dart';
+import 'package:hackaton/features/home_patient/presentation/home_patient_view.dart';
 import 'package:hackaton/features/login/presentation/decision_view.dart';
 import 'package:hackaton/features/login/presentation/doctor_form.dart';
 import 'package:hackaton/features/login/presentation/patient_form.dart';
@@ -30,6 +31,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       //     return const SplashPage();
       //   },
       // ),
+      GoRoute(
+        path: HomePatientView.routeLocation,
+        name: HomePatientView.routeName,
+        builder: (context, state) {
+          return HomePatientView(
+            patient: state.extra as Patient,
+          );
+        },
+      ),
       GoRoute(
         path: HomePage.routeLocation,
         name: HomePage.routeName,

@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hackaton/features/home_patient/presentation/home_patient_view.dart';
+import 'package:hackaton/features/register_patient/controller/register_patient_controller.dart';
+import 'package:hackaton/models/patient.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 class PatientForm extends ConsumerStatefulWidget {
   const PatientForm({super.key});
@@ -13,8 +18,8 @@ class PatientForm extends ConsumerStatefulWidget {
 
 class _DoctorFormState extends ConsumerState<PatientForm> {
   final _formKey = GlobalKey<FormState>();
-  String _email = '';
-  String _password = '';
+
+  final _document = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,45 +36,46 @@ class _DoctorFormState extends ConsumerState<PatientForm> {
                 child: Column(
                   children: <Widget>[
                     TextFormField(
+                      controller: _document,
                       decoration: const InputDecoration(
                           labelText: 'Documento de identidad'),
+                      keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Por favor ingrese su documento';
                         }
                         return null;
                       },
-                      onSaved: (value) {
-                        _email = value!.trim();
-                      },
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration:
-                          const InputDecoration(labelText: 'Contraseña'),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Por favor ingrese su contraseña';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _password = value!.trim();
-                      },
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState?.validate() ?? false) {
-                            _formKey.currentState!.save();
-                            // TODO: hacer algo con _email y _password
+                            // _formKey.currentState!.save();
+                            context.loaderOverlay.show();
+                            await Future.delayed(const Duration(seconds: 2));
+                            if (!mounted) return;
+                            final patients = ref.read(patientsProvider);
+                            Patient? patient;
+                            patients.whenData((value) {
+                              patient = value.firstWhere((element) =>
+                                  element.document == _document.text);
+                            });
+                            context.loaderOverlay.hide();
+                            if (patient != null) {
+                              context.goNamed(HomePatientView.routeName,
+                                  extra: patient);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Paciente no encontrado'),
+                                ),
+                              );
+                            }
                           }
                         },
-                        child: const Text('Iniciar sesión'),
+                        child: const Text('Ingresar'),
                       ),
                     ),
                   ],

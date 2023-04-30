@@ -2,69 +2,75 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hackaton/features/create_treatment/controller/create_treatment_controller.dart';
-import 'package:hackaton/features/create_treatment/presentation/create_treatment_view.dart';
+import 'package:hackaton/features/login/presentation/decision_view.dart';
 import 'package:hackaton/models/medical_device_order.dart';
 import 'package:hackaton/models/medication_order.dart';
 import 'package:hackaton/models/patient.dart';
 
-class PatientDetailsView extends StatelessWidget {
-  final Patient patient;
-
-  static String get routeName => 'patient_details';
-  static String get routeLocation => routeName;
-
-  const PatientDetailsView({
+class HomePatientView extends StatefulWidget {
+  const HomePatientView({
     Key? key,
     required this.patient,
   }) : super(key: key);
 
+  final Patient patient;
+
+  static String get routeName => 'home_patient';
+  static String get routeLocation => '/$routeName';
+
+  @override
+  State<HomePatientView> createState() => _HomePatientViewState();
+}
+
+class _HomePatientViewState extends State<HomePatientView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detalles del paciente'),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          context.pushNamed(
-            CreateTreatmentView.routeName,
-            extra: patient,
-          );
-        },
-        label: const Text('Agregar Tratamiento'),
-        icon: const Icon(Icons.add),
-      ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        children: [
-          const SizedBox(height: 16),
-          const Text('Nombres',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          Text(patient.name),
-          const SizedBox(height: 16),
-          const Text('Apellidos',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          Text(patient.lastName),
-          const SizedBox(height: 16),
-          const Text('Fecha de nacimiento',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          Text(patient.birthday.toString()),
-          const SizedBox(height: 16),
-          const Text('Correo electrónico',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          Text(patient.email),
-          const SizedBox(height: 16),
-          const Text('Documento de identidad',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          Text(patient.document),
-          const SizedBox(height: 16),
-          const Divider(),
-          const SizedBox(height: 16),
-          Text(
-            'Tratamientos:',
-            style: Theme.of(context).textTheme.headlineSmall,
+        title: const CircleAvatar(
+          backgroundImage: AssetImage('assets/images/user.jpg'),
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.notifications),
           ),
-          const SizedBox(height: 16),
+          IconButton(
+            onPressed: () {
+              context.goNamed(LoginDecisionView.routeName);
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 16,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'Bienvenido, ${widget.patient.name}',
+                  style: Theme.of(context).textTheme.displaySmall,
+                  textAlign: TextAlign.start,
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                Text(
+                  'Tratamientos en curso',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                  textAlign: TextAlign.start,
+                ),
+              ],
+            ),
+          ),
           Consumer(
             builder: (context, ref, child) {
               final treatments = ref.watch(treatmentsProvider);
@@ -77,17 +83,20 @@ class PatientDetailsView extends StatelessWidget {
                 },
                 data: (treamentsAll) {
                   final treatments = treamentsAll
-                      .where((element) => element.patientId == patient.id)
+                      .where(
+                          (element) => element.patientId == widget.patient.id)
                       .toList();
                   if (treatments.isEmpty) {
                     return const Text('No hay tratamientos asignados aún.');
                   }
                   return ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     shrinkWrap: true,
                     itemCount: treatments.length,
                     itemBuilder: (context, index) {
                       final treatment = treatments[index];
                       return ExpansionTile(
+                        initiallyExpanded: true,
                         title: Text(
                           '${treatment.name}',
                           style: const TextStyle(

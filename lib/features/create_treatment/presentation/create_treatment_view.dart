@@ -93,6 +93,9 @@ class _CreateTreatmentViewState extends ConsumerState<CreateTreatmentView> {
             decoration: const InputDecoration(
               labelText: 'Nombre del tratamiento',
             ),
+            onChanged: (value) {
+              setState(() {});
+            },
             textCapitalization: TextCapitalization.words,
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -117,7 +120,7 @@ class _CreateTreatmentViewState extends ConsumerState<CreateTreatmentView> {
                 return ListTile(
                   title: Text(medicationOrder.medication),
                   subtitle: Text(
-                    'Dose: ${medicationOrder.dose} ${medicationOrder.dosageUnit}, Frequency: ${medicationOrder.frequency}',
+                    'Dósis: ${medicationOrder.dose} ${medicationOrder.dosageUnit}, Frecuencia de uso: ${medicationOrder.frequency}',
                   ),
                 );
               },
@@ -139,7 +142,7 @@ class _CreateTreatmentViewState extends ConsumerState<CreateTreatmentView> {
                 return ListTile(
                   title: Text(medicalDeviceOrder.deviceName),
                   subtitle: Text(
-                    'Usage: ${medicalDeviceOrder.frequency}',
+                    'Frecuencia de uso: ${medicalDeviceOrder.frequency}',
                   ),
                 );
               },
@@ -188,6 +191,7 @@ class _CreateTreatmentViewState extends ConsumerState<CreateTreatmentView> {
                   decoration: const InputDecoration(
                     labelText: 'Nombre',
                   ),
+                  textCapitalization: TextCapitalization.words,
                   onChanged: (String value) {
                     newOrder = newOrder.copyWith(medication: value);
                   },
