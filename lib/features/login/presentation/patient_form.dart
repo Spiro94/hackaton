@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hackaton/features/home_patient/presentation/home_patient_view.dart';
 import 'package:hackaton/features/register_patient/controller/register_patient_controller.dart';
 import 'package:hackaton/models/patient.dart';
+import 'package:hackaton/shared/local_notice_service.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -57,6 +58,11 @@ class _DoctorFormState extends ConsumerState<PatientForm> {
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: ElevatedButton(
                         onPressed: () async {
+                          LocalNoticeService().addNotification(
+                            'Alerta Medicamento',
+                            'No se te olvide tu dósis de Lozartan de 30 mg a las 9:00 am',
+                            DateTime.now().millisecondsSinceEpoch + 5000,
+                          );
                           if (_formKey.currentState?.validate() ?? false) {
                             // _formKey.currentState!.save();
                             context.loaderOverlay.show();
@@ -69,6 +75,7 @@ class _DoctorFormState extends ConsumerState<PatientForm> {
                                   element.document == _document.text);
                             });
                             context.loaderOverlay.hide();
+
                             if (patient != null) {
                               context.goNamed(HomePatientView.routeName,
                                   extra: patient);

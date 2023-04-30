@@ -40,6 +40,7 @@ class _MainAppState extends ConsumerState<MainApp> {
 
     return GlobalLoaderOverlay(
       child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         builder: (context, child) => ResponsiveBreakpoints.builder(
           child: child!,
           breakpoints: [
