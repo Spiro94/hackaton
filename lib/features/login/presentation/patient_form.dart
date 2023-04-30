@@ -39,6 +39,7 @@ class _DoctorFormState extends ConsumerState<PatientForm> {
                     FadeInImage(
                       placeholder: MemoryImage(kTransparentImage),
                       image: const AssetImage('assets/images/bg1.jpg'),
+                      height: MediaQuery.of(context).size.height * 0.5,
                     ),
                     TextFormField(
                       controller: _document,

@@ -36,6 +36,7 @@ class _DoctorFormState extends ConsumerState<DoctorForm> {
                     FadeInImage(
                       placeholder: MemoryImage(kTransparentImage),
                       image: const AssetImage('assets/images/bg.jpg'),
+                      height: MediaQuery.of(context).size.height * 0.5,
                     ),
                     TextFormField(
                       decoration: const InputDecoration(

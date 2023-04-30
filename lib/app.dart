@@ -53,6 +53,7 @@ class _MainAppState extends ConsumerState<MainApp> {
         routerDelegate: router.routerDelegate,
         routeInformationProvider: router.routeInformationProvider,
         title: 'Hackaton i+FCV 2023',
+        themeMode: ThemeMode.light,
         theme: FlexThemeData.light(
           scheme: FlexScheme.blue,
           surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,

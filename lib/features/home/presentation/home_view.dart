@@ -94,9 +94,11 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text('Aun no hay pacientes registrados.'),
-                          const Image(
+                          Image(
                             image: AssetImage(
-                                'assets/images/magnifying_glass.jpg'),
+                              'assets/images/magnifying_glass.jpg',
+                            ),
+                            height: MediaQuery.of(context).size.height * 0.5,
                           ),
                           ElevatedButton(
                             onPressed: () {
