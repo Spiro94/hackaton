@@ -19,6 +19,7 @@ class LoginDecisionView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const SizedBox(height: 16),
                 Text(
                   'Bienvenido al AVCC app',
                   style: Theme.of(context).textTheme.headlineSmall,

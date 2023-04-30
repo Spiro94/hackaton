@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           const Text('Aun no hay pacientes registrados.'),
                           Image(
-                            image: AssetImage(
+                            image: const AssetImage(
                               'assets/images/magnifying_glass.jpg',
                             ),
                             height: MediaQuery.of(context).size.height * 0.5,
