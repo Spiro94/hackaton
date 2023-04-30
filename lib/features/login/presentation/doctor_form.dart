@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hackaton/features/home/presentation/home_view.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class DoctorForm extends ConsumerStatefulWidget {
   const DoctorForm({super.key});
@@ -32,6 +33,10 @@ class _DoctorFormState extends ConsumerState<DoctorForm> {
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
+                    FadeInImage(
+                      placeholder: MemoryImage(kTransparentImage),
+                      image: const AssetImage('assets/images/bg.jpg'),
+                    ),
                     TextFormField(
                       decoration: const InputDecoration(
                           labelText: 'Correo electrónico'),

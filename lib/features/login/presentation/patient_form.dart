@@ -5,6 +5,7 @@ import 'package:hackaton/features/home_patient/presentation/home_patient_view.da
 import 'package:hackaton/features/register_patient/controller/register_patient_controller.dart';
 import 'package:hackaton/models/patient.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class PatientForm extends ConsumerStatefulWidget {
   const PatientForm({super.key});
@@ -35,6 +36,10 @@ class _DoctorFormState extends ConsumerState<PatientForm> {
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
+                    FadeInImage(
+                      placeholder: MemoryImage(kTransparentImage),
+                      image: const AssetImage('assets/images/bg1.jpg'),
+                    ),
                     TextFormField(
                       controller: _document,
                       decoration: const InputDecoration(

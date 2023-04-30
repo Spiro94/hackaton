@@ -6,11 +6,36 @@ import 'package:hackaton/shared/router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-class MainApp extends ConsumerWidget {
+class MainApp extends ConsumerStatefulWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends ConsumerState<MainApp> {
+  late Image image1;
+  late Image image2;
+  late Image image3;
+
+  @override
+  void initState() {
+    super.initState();
+    image1 = Image.asset("assets/images/bg.jpg");
+    image2 = Image.asset("assets/images/bg1.jpg");
+    image3 = Image.asset("assets/images/bg2.jpg");
+  }
+
+  @override
+  void didChangeDependencies() {
+    precacheImage(image1.image, context);
+    precacheImage(image2.image, context);
+    precacheImage(image3.image, context);
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final router = ref.watch(routerProvider);
 
     return GlobalLoaderOverlay(
