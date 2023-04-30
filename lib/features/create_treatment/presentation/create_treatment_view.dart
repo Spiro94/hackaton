@@ -30,15 +30,6 @@ class _CreateTreatmentViewState extends ConsumerState<CreateTreatmentView> {
 
   final TextEditingController _nameController = TextEditingController();
 
-  final List<String> _frequencies = [
-    'Cada 2 horas',
-    'Cada 4 horas',
-    'Cada 6 horas',
-    'Cada 8 horas',
-    'Cada 10 horas',
-    'Cada 12 horas',
-  ];
-
   @override
   Widget build(BuildContext context) {
     ref.listen(treatmentsProvider, (previous, next) {
