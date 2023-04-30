@@ -16,7 +16,8 @@ class RegisterPatientView extends ConsumerStatefulWidget {
   static String get routeLocation => routeName;
 
   @override
-  _RegisterPatientViewState createState() => _RegisterPatientViewState();
+  ConsumerState<RegisterPatientView> createState() =>
+      _RegisterPatientViewState();
 }
 
 class _RegisterPatientViewState extends ConsumerState<RegisterPatientView> {
@@ -27,6 +28,7 @@ class _RegisterPatientViewState extends ConsumerState<RegisterPatientView> {
   final TextEditingController _birthdayController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _documentController = TextEditingController();
+  Patient? newPatient;
 
   @override
   void dispose() {
@@ -58,7 +60,7 @@ class _RegisterPatientViewState extends ConsumerState<RegisterPatientView> {
               duration: Duration(seconds: 2),
             ));
 
-          context.goNamed(CreateTreatmentView.routeName);
+          context.goNamed(CreateTreatmentView.routeName, extra: newPatient);
         },
       );
     });
@@ -142,16 +144,16 @@ class _RegisterPatientViewState extends ConsumerState<RegisterPatientView> {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    ref.read(patientsProvider.notifier).add(
-                          Patient(
-                            id: const Uuid().v4(),
-                            name: _nameController.text,
-                            lastName: _lastNameController.text,
-                            birthday: _birthdayController.text,
-                            email: _emailController.text,
-                            document: _documentController.text,
-                          ),
-                        );
+                    newPatient = Patient(
+                      id: const Uuid().v4(),
+                      name: _nameController.text,
+                      lastName: _lastNameController.text,
+                      birthday: _birthdayController.text,
+                      email: _emailController.text,
+                      document: _documentController.text,
+                    );
+
+                    ref.read(patientsProvider.notifier).add(newPatient!);
                   }
                 },
                 child: const Text('Guardar'),

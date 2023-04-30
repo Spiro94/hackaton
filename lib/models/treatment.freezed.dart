@@ -21,6 +21,7 @@ Treatment _$TreatmentFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Treatment {
   String get id => throw _privateConstructorUsedError;
+  String get patientId => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   List<MedicationOrder> get medicationOrders =>
       throw _privateConstructorUsedError;
@@ -40,6 +41,7 @@ abstract class $TreatmentCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
+      String patientId,
       String? name,
       List<MedicationOrder> medicationOrders,
       List<MedicalDeviceOrder> medicalDeviceOrders});
@@ -59,6 +61,7 @@ class _$TreatmentCopyWithImpl<$Res, $Val extends Treatment>
   @override
   $Res call({
     Object? id = null,
+    Object? patientId = null,
     Object? name = freezed,
     Object? medicationOrders = null,
     Object? medicalDeviceOrders = null,
@@ -67,6 +70,10 @@ class _$TreatmentCopyWithImpl<$Res, $Val extends Treatment>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      patientId: null == patientId
+          ? _value.patientId
+          : patientId // ignore: cast_nullable_to_non_nullable
               as String,
       name: freezed == name
           ? _value.name
@@ -93,6 +100,7 @@ abstract class _$$_TreatmentCopyWith<$Res> implements $TreatmentCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
+      String patientId,
       String? name,
       List<MedicationOrder> medicationOrders,
       List<MedicalDeviceOrder> medicalDeviceOrders});
@@ -110,6 +118,7 @@ class __$$_TreatmentCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? patientId = null,
     Object? name = freezed,
     Object? medicationOrders = null,
     Object? medicalDeviceOrders = null,
@@ -118,6 +127,10 @@ class __$$_TreatmentCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      patientId: null == patientId
+          ? _value.patientId
+          : patientId // ignore: cast_nullable_to_non_nullable
               as String,
       name: freezed == name
           ? _value.name
@@ -140,6 +153,7 @@ class __$$_TreatmentCopyWithImpl<$Res>
 class _$_Treatment implements _Treatment {
   _$_Treatment(
       {required this.id,
+      required this.patientId,
       this.name,
       required final List<MedicationOrder> medicationOrders,
       final List<MedicalDeviceOrder> medicalDeviceOrders = const []})
@@ -151,6 +165,8 @@ class _$_Treatment implements _Treatment {
 
   @override
   final String id;
+  @override
+  final String patientId;
   @override
   final String? name;
   final List<MedicationOrder> _medicationOrders;
@@ -174,7 +190,7 @@ class _$_Treatment implements _Treatment {
 
   @override
   String toString() {
-    return 'Treatment(id: $id, name: $name, medicationOrders: $medicationOrders, medicalDeviceOrders: $medicalDeviceOrders)';
+    return 'Treatment(id: $id, patientId: $patientId, name: $name, medicationOrders: $medicationOrders, medicalDeviceOrders: $medicalDeviceOrders)';
   }
 
   @override
@@ -183,6 +199,8 @@ class _$_Treatment implements _Treatment {
         (other.runtimeType == runtimeType &&
             other is _$_Treatment &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.patientId, patientId) ||
+                other.patientId == patientId) &&
             (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality()
                 .equals(other._medicationOrders, _medicationOrders) &&
@@ -195,6 +213,7 @@ class _$_Treatment implements _Treatment {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      patientId,
       name,
       const DeepCollectionEquality().hash(_medicationOrders),
       const DeepCollectionEquality().hash(_medicalDeviceOrders));
@@ -216,6 +235,7 @@ class _$_Treatment implements _Treatment {
 abstract class _Treatment implements Treatment {
   factory _Treatment(
       {required final String id,
+      required final String patientId,
       final String? name,
       required final List<MedicationOrder> medicationOrders,
       final List<MedicalDeviceOrder> medicalDeviceOrders}) = _$_Treatment;
@@ -225,6 +245,8 @@ abstract class _Treatment implements Treatment {
 
   @override
   String get id;
+  @override
+  String get patientId;
   @override
   String? get name;
   @override

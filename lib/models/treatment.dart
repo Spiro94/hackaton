@@ -9,6 +9,7 @@ part 'treatment.g.dart';
 class Treatment with _$Treatment {
   factory Treatment({
     required String id,
+    required String patientId,
     String? name,
     required List<MedicationOrder> medicationOrders,
     @Default([]) List<MedicalDeviceOrder> medicalDeviceOrders,

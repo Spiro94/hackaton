@@ -1,23 +1,24 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hackaton/models/patient.dart';
+import 'package:hackaton/models/treatment.dart';
 
-class TreatmentsNotifier extends AsyncNotifier<void> {
+class TreatmentsNotifier extends AsyncNotifier<List<Treatment>> {
   TreatmentsNotifier() : super();
 
-  final patientList = <Patient>[];
+  final treatmentList = <Treatment>[];
   @override
-  List<Patient> build() {
-    return patientList;
+  List<Treatment> build() {
+    return treatmentList;
   }
 
-  Future<void> add(Patient patient) async {
+  Future<void> add(Treatment treatment) async {
     state = const AsyncValue.loading();
     await Future.delayed(const Duration(seconds: 2));
-    patientList.add(patient);
-    state = const AsyncValue.data(null);
+    treatmentList.add(treatment);
+    state = AsyncValue.data(treatmentList);
   }
 }
 
-final patientsProvider = AsyncNotifierProvider<TreatmentsNotifier, void>(() {
+final treatmentsProvider =
+    AsyncNotifierProvider<TreatmentsNotifier, List<Treatment>>(() {
   return TreatmentsNotifier();
 });

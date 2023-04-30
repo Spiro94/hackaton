@@ -57,7 +57,9 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: CreateTreatmentView.routeLocation,
             name: CreateTreatmentView.routeName,
             builder: (context, state) {
-              return const CreateTreatmentView();
+              return CreateTreatmentView(
+                patient: state.extra as Patient,
+              );
             },
           ),
         ],
@@ -95,7 +97,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
     redirect: (context, state) {
       return null;
-    
+
       // // If our async state is loading, don't perform redirects, yet
       // if (authState.isLoading || authState.hasError) return null;
 

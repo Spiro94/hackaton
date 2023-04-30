@@ -8,6 +8,7 @@ part of 'treatment.dart';
 
 _$_Treatment _$$_TreatmentFromJson(Map<String, dynamic> json) => _$_Treatment(
       id: json['id'] as String,
+      patientId: json['patientId'] as String,
       name: json['name'] as String?,
       medicationOrders: (json['medicationOrders'] as List<dynamic>)
           .map((e) => MedicationOrder.fromJson(e as Map<String, dynamic>))
@@ -22,6 +23,7 @@ _$_Treatment _$$_TreatmentFromJson(Map<String, dynamic> json) => _$_Treatment(
 Map<String, dynamic> _$$_TreatmentToJson(_$_Treatment instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'patientId': instance.patientId,
       'name': instance.name,
       'medicationOrders': instance.medicationOrders,
       'medicalDeviceOrders': instance.medicalDeviceOrders,

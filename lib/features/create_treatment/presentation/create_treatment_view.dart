@@ -1,24 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hackaton/features/create_treatment/controller/create_treatment_controller.dart';
 import 'package:hackaton/features/home/presentation/home_view.dart';
 import 'package:hackaton/models/medical_device_order.dart';
 import 'package:hackaton/models/medication_order.dart';
+import 'package:hackaton/models/patient.dart';
+import 'package:hackaton/models/treatment.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:uuid/uuid.dart';
 
-class CreateTreatmentView extends StatefulWidget {
-  const CreateTreatmentView({Key? key}) : super(key: key);
+class CreateTreatmentView extends ConsumerStatefulWidget {
+  const CreateTreatmentView({Key? key, required this.patient})
+      : super(key: key);
 
+  final Patient patient;
   static String get routeName => 'create_treatment';
   static String get routeLocation => routeName;
 
   @override
-  State<CreateTreatmentView> createState() => _CreateTreatmentViewState();
+  ConsumerState<CreateTreatmentView> createState() =>
+      _CreateTreatmentViewState();
 }
 
-class _CreateTreatmentViewState extends State<CreateTreatmentView> {
+class _CreateTreatmentViewState extends ConsumerState<CreateTreatmentView> {
   final List<MedicationOrder> _medicationOrders = [];
-
   final List<MedicalDeviceOrder> _medicalDeviceOrders = [];
+
+  final TextEditingController _nameController = TextEditingController();
+
   final List<String> _frequencies = [
     'Cada 2 horas',
     'Cada 4 horas',
@@ -30,23 +41,67 @@ class _CreateTreatmentViewState extends State<CreateTreatmentView> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(treatmentsProvider, (previous, next) {
+      next.when(
+        loading: () {
+          context.loaderOverlay.show();
+        },
+        error: (error, stackTrace) {
+          context.loaderOverlay.hide();
+          return;
+        },
+        data: (completed) {
+          context.loaderOverlay.hide();
+          ScaffoldMessenger.of(context)
+            ..clearSnackBars()
+            ..showSnackBar(const SnackBar(
+              content: Text('Tratamiento registrado correctamente'),
+              duration: Duration(seconds: 2),
+            ));
+          context.goNamed(HomePage.routeName);
+        },
+      );
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('Crear tratamiento'),
         actions: [
           IconButton(
             icon: const Icon(Icons.check),
-            onPressed: _medicationOrders.isNotEmpty
-                ? () {
-                    context.goNamed(HomePage.routeName);
-                  }
-                : null,
+            onPressed:
+                _medicationOrders.isNotEmpty && _nameController.text.isNotEmpty
+                    ? () {
+                        ref.read(treatmentsProvider.notifier).add(
+                              Treatment(
+                                id: const Uuid().v4(),
+                                name: _nameController.text,
+                                patientId: widget.patient.id,
+                                medicationOrders: _medicationOrders,
+                                medicalDeviceOrders: _medicalDeviceOrders,
+                              ),
+                            );
+                      }
+                    : null,
           ),
         ],
       ),
       body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         children: [
+          TextFormField(
+            controller: _nameController,
+            decoration: const InputDecoration(
+              labelText: 'Nombre del tratamiento',
+            ),
+            textCapitalization: TextCapitalization.words,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Por favor ingrese un nombre';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 16),
           Text(
             'Medicamentos',
             style: Theme.of(context).textTheme.headlineSmall,
@@ -67,7 +122,7 @@ class _CreateTreatmentViewState extends State<CreateTreatmentView> {
                 );
               },
             ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 40),
           Text(
             'Dispositivos médicos',
             style: Theme.of(context).textTheme.headlineSmall,
@@ -190,7 +245,7 @@ class _CreateTreatmentViewState extends State<CreateTreatmentView> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                context.pop();
               },
               child: const Text('Cancelar'),
             ),
@@ -199,7 +254,7 @@ class _CreateTreatmentViewState extends State<CreateTreatmentView> {
                 setState(() {
                   _medicationOrders.add(newOrder);
                 });
-                Navigator.pop(context);
+                context.pop();
               },
               child: const Text('Añadir'),
             ),
